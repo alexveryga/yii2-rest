@@ -36,7 +36,7 @@ class BaseController extends ActiveController
     /**
      * @var string
      */
-    public $createScenario;
+    public string $createScenario;
 
     /**
      * @var string
@@ -188,8 +188,8 @@ class BaseController extends ActiveController
                 $transaction->commit();
             } catch (\Exception $e) {
                 $transaction->rollBack();
-                $this->response->setStatusCode(self::CODE_UNPROCESSABLE_ENTITY);
-                throw new UnprocessableEntityHttpException($e->getMessage());
+                $this->response->setStatusCode(self::CODE_NOT_FOUND);
+                throw new NotFoundHttpException($e->getMessage());
             }
         } else {
             throw new BadRequestHttpException('Parameters missing');
