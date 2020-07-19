@@ -35,12 +35,14 @@ services:
 
   nginx:
     hostname: rest-api.work
-    build: ./docker/nginx
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./docker/:/var/www/html
+      - ./src:/var/www/html/src/
     container_name: nginx
     dns:
       - 10.10.0.100
@@ -52,9 +54,11 @@ services:
 
   web:
     hostname: web
-    build: ./docker/php-fpm74
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm74/Dockerfile
     volumes:
-      - ./docker/:/var/www/html
+      - ./src:/var/www/html/src/
     environment:
       DATABASE_HOST: 'mysql'
       DATABASE_NAME: 'rest_api'
