@@ -31,7 +31,7 @@ return [
             'useMemcached' => true,
             'servers' => [
                 [
-                    'host' => '127.0.0.1',
+                    'host' => 'api_memcached_1',
                     'port' => 11211,
                     'weight' => 100,
                 ],
