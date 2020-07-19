@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+  dns:
+    restart: always
+    image: strm/dnsmasq
+    volumes:
+      - ./dnsmasq.conf:/etc/dnsmasq.conf
+    ports:
+      - "53:53/udp"
+    cap_add:
+      - NET_ADMIN
+    networks:
+      rest-api-network:
+        aliases:
+          - nginx
+        ipv4_address: 10.10.0.100
+
+  mysql:
+    hostname: mysql
+    build: ./docker/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "13306:3306"
+    volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
+    container_name: mysql
+    networks:
+      rest-api-network:
+        aliases:
+          - mysql
+
+  nginx:
+    hostname: rest-api.work
+    build: ./docker/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/:/var/www/html
+    container_name: nginx
+    dns:
+      - 10.10.0.100
+    networks:
+      rest-api-network:
+        aliases:
+          - nginx
+        ipv4_address: 10.10.0.10
+
+  web:
+    hostname: web
+    build: ./docker/php-fpm74
+    volumes:
+      - ./docker/:/var/www/html
+    environment:
+      DATABASE_HOST: 'mysql'
+      DATABASE_NAME: 'rest_api'
+      DATABASE_USER: 'root'
+      DATABASE_PASSWORD: 'root'
+    container_name: web
+    networks:
+      rest-api-network:
+        aliases:
+          - web
+
+  memcached:
+    hostname: memcached
+    image: library/memcached:1.6.6
+    ports:
+      - "11212:11211"
+    networks:
+      rest-api-network:
+        aliases:
+          - memcached
+
+networks:
+  rest-api-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/24

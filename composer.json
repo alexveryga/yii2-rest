@@ -1,0 +1,47 @@
+{
+    "name": "alexveryga/rest-api",
+    "description": "Yii2 REST API",
+    "require": {
+        "php": "^7.4.0",
+        "ext-json": "*",
+        "yiisoft/yii2": "^2.0.31",
+        "ext-memcache": "*"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.1.0",
+        "yiisoft/yii2-gii": "~2.1.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "yiisoft/yii2-bootstrap": "^2.0.0",
+        "yiisoft/yii2-codeception": "^2.0.0",
+        "phpunit/phpunit": "8.3",
+        "codeception/codeception": "^4.0",
+        "codeception/verify": "~0.5.0 || ~1.1.0",
+        "codeception/specify": "~0.4.6",
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "codeception/module-filesystem": "^1.0.0",
+        "codeception/module-yii2": "^1.0.0",
+        "codeception/module-asserts": "^1.0.0",
+        "codeception/module-rest": "^1.2"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "src\\modules\\api\\": "src/modules/api",
+            "tests\\": "tests"
+        }
+    },
+    "extra": {
+        "bootstrap": "src\\modules\\api"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
+}
